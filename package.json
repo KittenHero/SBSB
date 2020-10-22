@@ -1,0 +1,19 @@
+{
+  "name": "sbsb",
+  "version": "1.0.0",
+  "description": "Static site",
+  "dependencies": {},
+  "devDependencies": {
+    "bootstrap": "^4.5.3",
+    "jquery": "^3.5.1",
+    "popper.js": "^1.16.1",
+    "pug": "^3.0.0",
+    "pugserver": "^1.1.0",
+    "purgecss": "^3.0.0"
+  },
+  "scripts": {
+    "start": "pugserver -p 1800 src",
+    "build": "node build.js"
+  },
+  "author": "Naris R."
+}

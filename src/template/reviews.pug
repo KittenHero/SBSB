@@ -1,0 +1,27 @@
+mixin review(date, img, text)
+    .col-sm-4.d-none.d-sm-block.text-right.py-2
+        img.mx-auto.rounded-circle(src=img, alt='')
+    .col-sm-8.text-left.p-2
+        h4= date
+        p.text-muted= text
+            
+
+section#reviews.page-section.bg-light
+    .container
+        .text-center
+            h2.section-heading.text-uppercase Reviews
+            h3.section-subheading.text-muted Leave a review for us on 
+                a(href='https://www.facebook.com/pg/Sabaisabaithai/reviews/') Facebook
+        .row
+            +review('26 June 2020', '/assets/img/treatments/remedial-massage-small.jpg', 
+                'Amazing massage experience every time. Very professional and lovely staff.'
+            )
+            +review('16 July 2019', '/assets/img/treatments/thai-massage-small.jpg', 
+                'Fantastic massage very professional & lovely staff.'
+            )
+            +review('12 June 2016', '/assets/img/treatments/hot-stone-small.jpg', 
+                'Great massage, hot stones were awesome. Very relaxing, feeling rejuvenated.'
+            )
+            +review('24 February 2015', '/assets/img/treatments/facial-massage-small.jpg', 
+                'Fantastic!!!! Good place for relax everyone everyday.'
+            )
