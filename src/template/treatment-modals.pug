@@ -1,11 +1,8 @@
 mixin modal(title, subtitle, description, id, img, prices)
     .treatment-modal.modal.fade(id=id, tabindex='-1', role='dialog', aria-hidden='true')
-        .modal-dialog
+        .modal-dialog.modal-dialog-scrollable
             .modal-content
-                .close-modal(data-dismiss='modal')
-                    span.mr-2(aria-hidden=true) &times;
-                    | Close
-                .container
+                .modal-body
                     .row.justify-content-center
                         .col-lg-8
                             .modal-body
@@ -19,9 +16,10 @@ mixin modal(title, subtitle, description, id, img, prices)
                                 ul.list-inline
                                     each price, duration in prices
                                         li #{duration} minutes: $#{price}
-                                button.btn.btn-primary(data-dismiss='modal', type='button')
-                                    span.mr-2(aria-hidden=true) &times;
-                                    | Close
+                .modal-footer
+                    button.btn.btn-primary(data-dismiss='modal', type='button')
+                        span.mr-2(aria-hidden=true) &times;
+                        | Close
 
 -
     let treatments = [

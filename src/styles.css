@@ -10229,8 +10229,6 @@ header.masthead .masthead-heading {
   max-width: 100vw;
 }
 .treatment-modal .modal-content {
-  padding-top: 6rem;
-  padding-bottom: 6rem;
   text-align: center;
 }
 .treatment-modal .modal-content h2 {
@@ -10251,15 +10249,7 @@ header.masthead .masthead-heading {
 .treatment-modal .modal-content img {
   margin-bottom: 2rem;
 }
-.treatment-modal .close-modal {
-  position: absolute;
-  top: 1.5rem;
-  right: 1.5rem;
-  width: 3rem;
-  height: 3rem;
-  cursor: pointer;
-  background-color: transparent;
-}
+
 .treatment-modal .close-modal:hover {
   opacity: 0.3;
 }
