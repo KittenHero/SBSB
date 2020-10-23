@@ -21,31 +21,44 @@ $(function () {
             $this = $("#sendMessageButton");
             $this.prop("disabled", true); // Disable submit button until AJAX call is complete to prevent duplicate messages
             $.ajax({
-                url: "/assets/mail/contact_me.php",
+                url: "https://api.sabaisabaithaimassage.com.au/contact",
                 type: "POST",
-                data: {
-                    name: name,
-                    phone: phone,
-                    email: email,
-                    message: message,
-                },
+                data: JSON.stringify({
+                    subject: `message from ${name}`,
+                    text:
+                        `from: ${name}\n`
+                        + `phone: ${phone}\n`
+                        + `email: ${email}\n`
+                        + `message: ${message}`,
+                    html:
+                        `<ul><li>from: ${name}</li>`
+                        + `<li>phone: <a href="tel:${phone}>${phone}</a></li>`
+                        + `<li>email: <a href="mailto:${email}>${email}</a></li>`
+                        + `<li>message: <p>${message}</p></li></ul>`,
+                }),
+                dataType: 'text',
                 cache: false,
-                success: function () {
-                    // Success message
-                    $("#success").html("<div class='alert alert-success'>");
-                    $("#success > .alert-success")
-                        .html(
-                            "<button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;"
-                        )
-                        .append("</button>");
-                    $("#success > .alert-success").append(
-                        "<strong>Your message has been sent. </strong>"
-                    );
-                    $("#success > .alert-success").append("</div>");
-                    //clear all fields
-                    $("#contactForm").trigger("reset");
+                complete: function () {
+                    setTimeout(function () {
+                        $this.prop("disabled", false); // Re-enable submit button when AJAX call is complete
+                    }, 1000);
                 },
-                error: function () {
+            }).done(function () {
+                // Success message
+                $("#success").html("<div class='alert alert-success'>");
+                $("#success > .alert-success")
+                    .html(
+                        "<button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;"
+                    )
+                    .append("</button>");
+                $("#success > .alert-success").append(
+                    "<strong>Your message has been sent. </strong>"
+                );
+                $("#success > .alert-success").append("</div>");
+                //clear all fields
+                $("#contactForm").trigger("reset");
+            }).fail(function (response, status, error) {
+                    console.log(status, error, response.status);
                     // Fail message
                     $("#success").html("<div class='alert alert-danger'>");
                     $("#success > .alert-danger")
@@ -57,18 +70,12 @@ $(function () {
                         $("<strong>").text(
                             "Sorry " +
                                 firstName +
-                                ", it seems that my mail server is not responding. Please try again later!"
+                                ", it seems that our mail server is not responding. Please try again later!"
                         )
                     );
                     $("#success > .alert-danger").append("</div>");
                     //clear all fields
-                    $("#contactForm").trigger("reset");
-                },
-                complete: function () {
-                    setTimeout(function () {
-                        $this.prop("disabled", false); // Re-enable submit button when AJAX call is complete
-                    }, 1000);
-                },
+                    // $("#contactForm").trigger("reset");
             });
         },
         filter: function () {
