@@ -4,5 +4,8 @@ html(lang='en')
         block head
             include head.pug
     body#page-top
+        noscript
+            iframe(src="https://www.googletagmanager.com/ns.html?id=GTM-K3Q2MQK"
+                height="0" width="0" style="display:none;visibility:hidden")
         block content
         include scripts.pug
