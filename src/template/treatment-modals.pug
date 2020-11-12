@@ -9,13 +9,13 @@ mixin modal(title, subtitle, description, id, img, prices)
                                 h2.text-uppercase= title
                                 p.item-intro.text-muted= subtitle
                     .row.justify-content-center
-                        .col-lg-7
-                            img.img-fluid.d-block.mx-auto(src=img, alt=title)
                         .col-lg-5
                                 p= description
                                 ul.list-inline
                                     each price, duration in prices
                                         li #{duration} minutes: $#{price}
+                        .col-lg-7
+                            img.img-fluid.d-block.mx-auto(src=img, alt=title)
                 .modal-footer
                     button.btn.btn-primary(data-dismiss='modal', type='button')
                         span.mr-2(aria-hidden=true) &times;
@@ -41,7 +41,7 @@ mixin modal(title, subtitle, description, id, img, prices)
         {
             title: 'Foot Massage',
             description:
-                'Releive pain by stimulating pressure points on your feet.'
+                'Relieve pain by stimulating pressure points on your feet.'
                 + '  Reflexology encourages flow of blood and promotes healing,'
                 + ' relieving pain at the root level.',
             id: 'foot-massage',
@@ -73,7 +73,7 @@ mixin modal(title, subtitle, description, id, img, prices)
             title: 'Hot Stone Massage',
             description:
                 'Relax your muscles and mind using acient techniques of placing smooth heated stones on key points of your body.'
-                + '  Tge geat if tge stibes will warm your body, releasing all stress and tension.',
+                + '  The heat if the stones will warm your body, releasing all stress and tension.',
             id: 'stone-massage',
             img: 'assets/img/treatments/hot-stone.jpg',
             prices: {
@@ -87,7 +87,7 @@ mixin modal(title, subtitle, description, id, img, prices)
         {
             title: 'Deep Tissue Massage',
             description:
-                'This massage will work on your deep muscle to balace your body structure and remove tension.',
+                'This massage will work on your deep muscle to balance your body structure and remove tension.',
             id: 'deep-tissue',
             img: 'assets/img/treatments/deep-tissue-massage.jpg',
             prices: {
@@ -131,7 +131,7 @@ mixin modal(title, subtitle, description, id, img, prices)
             title: 'Facial Massage',
             description:
              'Give your skin a youthful glow with this anti-aging treatment, helping prevent wrinkles and increase circulation.'
-              + '  Can also relieve allergy symptoms and congestion by improving dranage.',
+              + '  Can also relieve allergy symptoms and congestion by improving drainage.',
             id: 'facial-massage',
             img: 'assets/img/treatments/facial-massage.jpg',
             prices: {
