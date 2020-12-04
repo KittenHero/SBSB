@@ -1,13 +1,11 @@
 mixin modal(title, subtitle, description, id, img, prices)
     .treatment-modal.modal.fade(id=id, tabindex='-1', role='dialog', aria-hidden='true')
-        .modal-dialog.modal-dialog-scrollable(role='document')
+        .modal-dialog.full.modal-dialog-scrollable(role='document')
             .modal-content
+                .modal-header.justify-content-center
+                        h2.text-uppercase= title
+                        p.item-intro.text-muted= subtitle
                 .modal-body
-                    .row.justify-content-center
-                        .col-lg-8
-                            .modal-body
-                                h2.text-uppercase= title
-                                p.item-intro.text-muted= subtitle
                     .row.justify-content-center
                         .col-lg-5
                                 p= description
