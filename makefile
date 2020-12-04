@@ -9,6 +9,7 @@ CSSSRC:=$(shell find $(SRCDIR) -regex '.*\\.\\(pug\\|css\\|js\\)')
 ASSETSSRC:=$(shell find $(SRCDIR) -regex '.*\\.\\(js\\|png\\|jpg\\|svg\\|ico\\)')
 ASSETS:=$(subst $(SRCDIR), $(BUILDPATH), $(ASSETSSRC))
 BUILDSUBDIRS:=$(shell echo $(dir $(ASSETS))|tr ' ' '\n'|sort -u|tr '\n' ' ')
+S3BUCKET:=s3://sabaisabaithaimassage.com.au
 
 .PHONY: all clean
 
