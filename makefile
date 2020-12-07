@@ -26,7 +26,7 @@ $(CSS): $(CSSSRC) | $(BUILDPATH)
 	@echo $@
 	@$(CC) -css
 
-$(BUILDSUBDIRS):
+$(BUILDSUBDIRS) $(BUILDPATH):
 	@mkdir -p $@
 
 .SECONDEXPANSION:

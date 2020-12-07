@@ -1,0 +1,56 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  SabaiThaiAPI
+
+  API for forwarding contact form to email and processing payments through securepay
+
+# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
+Globals:
+  Function:
+    Runtime: python3.8
+    Timeout: 3
+    Environment:
+      Variables:
+        DB_ENGINE: postgres://admin@172.17.0.1/SabaiThaiDB
+  Api:
+    EndpointConfiguration: REGIONAL
+    Cors: "'sabaisabaithaimassage.com.au'"
+    Domain:
+      DomainName: api.sabaisabaithaimassage.com.au
+      CertificateArn: arn:aws:acm:ap-southeast-2:637789488287:certificate/0da395e3-e5b6-4d44-abe0-893bd41e954d
+      Route53:
+        HostedZoneName: sabaisabaithaimassage.com.au
+
+Resources:
+  EmailFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: api/
+      Handler: app.send_email
+      Policies:
+        - SESsendEmail
+        - AWSLambdaVPCAccessExecutionRole
+      Events:
+        Email:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            Path: /send_email
+            Method: post
+
+#     Policies:
+#       - AWSLambdaVPCAccessExecutionRole
+
+Outputs:
+  # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
+  # Find out more about other implicit resources you can reference within SAM
+  # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
+  EmailAPI:
+    Description: "API Gateway endpoint URL for Prod stage for Email function"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/v1/send_email/"
+  EmailFunction:
+    Description: "Email Lambda Function ARN"
+    Value: !GetAtt EmailFunction.Arn
+  EmailFunctionIamRole:
+    Description: "Implicit IAM Role created for Email function"
+    Value: !GetAtt EmailFunctionRole.Arn
