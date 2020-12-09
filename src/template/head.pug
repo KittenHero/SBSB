@@ -3,7 +3,7 @@ meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fi
 meta(name='description', content='')
 meta(name='author', content='Naris R.')
 
-link(rel='icon', type='image/x-icon', href='assets/img/favicon.ico')
+link(rel='icon', type='image/x-icon', href=require('../assets/img/favicon.ico'))
 
 // Google fonts
 link(href='https://fonts.googleapis.com/css?family=Montserrat:400,700', rel='stylesheet', type='text/css')
@@ -11,7 +11,6 @@ link(href='https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic
 link(href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700', rel='stylesheet', type='text/css')
 
 // Core theme CSS (includes Bootstrap)
-link(href='/styles.css', rel='stylesheet')
 script.
     (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start': new Date().getTime(),event:'gtm.js'});
     var f=d.getElementsByTagName(s)[0], j=d.createElement(s), dl=l!='dataLayer'?'&l='+l:'';

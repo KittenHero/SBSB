@@ -1,3 +1,10 @@
+import 'bootstrap/js/dist/collapse';
+import 'bootstrap/js/dist/modal';
+import 'bootstrap/js/dist/scrollspy';
+
+import 'jquery.easing';
+import jQuery from 'jquery';
+
 /*!
     * Start Bootstrap - Agency v6.0.2 (https://startbootstrap.com/template-overviews/agency)
     * Copyright 2013-2020 Start Bootstrap

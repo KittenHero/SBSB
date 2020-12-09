@@ -10113,7 +10113,7 @@ img::-moz-selection {
     transition: font-size 0.3s ease-in-out;
   }
   #mainNav .navbar-brand img {
-    height: 4rem;
+    height: 3rem;
     transition: height 0.3s ease-in-out;
   }
   #mainNav.navbar-shrink {
@@ -10143,7 +10143,7 @@ header.masthead {
   background:
    radial-gradient(circle, #0008 45%, transparent 90%),
    linear-gradient(to right, #6c5768, #6c5768),
-   url("../assets/img/header-bg.jpg");
+   url("assets/img/header-bg.jpg");
   background-repeat: no-repeat;
   background-attachment: scroll;
   background-position: center center;
@@ -10296,6 +10296,9 @@ section#contact {
 }
 section#contact form#contactForm .form-group {
   margin-bottom: 1.5rem;
+}
+section#contact form#contactForm .form-group:last-child {
+  margin-bottom: 0;
 }
 section#contact form#contactForm .form-group input,
 section#contact form#contactForm .form-group textarea {
