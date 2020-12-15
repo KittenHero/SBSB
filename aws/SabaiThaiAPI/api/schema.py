@@ -14,14 +14,12 @@ from marshmallow import (
 )
 
 from models import (
-    Session,
+    session,
     Customer,
     Price,
     Discount,
     Purchase,
 )
-
-session = Session()
 
 PHONE_PATTERN = re.compile('\+?\d{10,11}')
 UUID_NAMESPACE = uuid.uuid3(uuid.NAMESPACE_DNS, 'sabaisabaithaimassage.com.au')
@@ -128,6 +126,9 @@ class PurchaseSchema(Schema):
     customer = fields.Nested(CustomerSchema, required=True)
     items = fields.List(fields.Nested(ItemSchema), required=True)
     total = fields.Decimal(2, dump_only=True)
+    payment_token = fields.Str(required=False)
+    payment_status = fields.Str(required=False, dump_only=True)
+    payment_response = fields.Dict(required=False, dump_only=True)
 
     @validates('items')
     def validate_items(self, data, **kwargs):

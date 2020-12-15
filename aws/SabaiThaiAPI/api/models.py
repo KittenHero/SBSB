@@ -13,11 +13,12 @@ from sqlalchemy import (
     DateTime,
     Time,
 )
+from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, sessionmaker
 
 engine = create_engine(os.environ.get('DB_ENGINE', 'postgres://admin@localhost/SabaiThaiDB'))
-Session = sessionmaker(engine)
+session = sessionmaker(engine)()
 
 Base = declarative_base(metadata=MetaData(schema='sabai_thai'))
 
@@ -62,6 +63,7 @@ class Customer(Base):
     timestamp = Column(DateTime, default=datetime.utcnow, nullable=False)
 
     purchases = relationship('Purchase', back_populates='customer')
+    payments = relationship('Payment', back_populates='customer')
 
     __table_args__ = (
         Index('idx_uuid', uuid),
@@ -98,4 +100,25 @@ class Booking(Base):
     __table_args__ = (
         Index('idx_start_time', start_time),
         Index('idx_purchase_id_start_time', purchase_id, start_time),
+    )
+
+
+class Payment(Base):
+    __tablename__ = 'payment'
+
+    id = Column(Integer, primary_key=True)
+    token = Column(String, nullable=False)
+    amount = Column(Numeric(precision=10, scale=2), nullable=False)
+    currency = Column(String(3), nullable=False)
+    status = Column(String(10), nullable=False)
+    createdAt = Column(DateTime, nullable=False)
+    orderId = Column(String, ForeignKey('customer.uuid'), nullable=False)
+    gatewayResponseCode = Column(String(2), nullable=True)
+    errorCode = Column(String(3), nullable=True)
+    response = Column(JSONB, nullable=False)
+
+    customer = relationship('Customer', back_populates='payments')
+
+    __table_args__ = (
+        Index('idx_orderId', orderId),
     )
