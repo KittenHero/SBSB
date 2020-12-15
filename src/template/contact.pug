@@ -1,0 +1,20 @@
+section#contact.page-section
+    .container
+        .text-center
+            h2.section-heading.text-uppercase Contact Us
+            h3.section-subheading Call us to make a booking
+        .row.justify-content-around
+            .col-md-6.mb-3
+                #location
+                    h4 Location
+                    p.card-text 13/2 Surf Road, Cronulla, NSW 2230
+                    p.card-text Open: 10:00 am - 9:00 pm
+                    p.card-text Call: 
+                        a(href='tel:0295277087') 02 9527 7087
+                        | , 
+                        a(href='tel:0401807691') 0401 807 691
+                    .embed-responsive.embed-responsive-16by9
+                        iframe#map.embed-responsive-item(frameborder="0" style="border:0", allowfullscreen,
+                            src=`https://www.google.com/maps/embed/v1/place?key={GOOGLE_API_KEY}&q=13/2+Surf+Road,Cronulla,NSW`
+                        )
+            form#contactForm.col-md-6
