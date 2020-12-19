@@ -61,8 +61,8 @@ const ContactForm = (props) => {
           + `message: ${message}`,
           html:
           `<ul><li>from: ${name}</li>`
-          + `<li>phone: <a href="tel:${phone}>${phone}</a></li>`
-          + `<li>email: <a href="mailto:${email}>${email}</a></li>`
+          + `<li>phone: <a href="tel:${phone}">${phone}</a></li>`
+          + `<li>email: <a href="mailto:${email}">${email}</a></li>`
           + `<li>message: <p>${message}</p></li></ul>`,
         })
       }).then(() => dispatch({ type: 'success' }))
