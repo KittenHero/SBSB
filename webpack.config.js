@@ -8,6 +8,17 @@ const PurgecssPlugin = require('purgecss-webpack-plugin');
 
 const PROD = process.env.NODE_ENV == 'production';
 const config = dotenv.config({ path: path.join(__dirname, PROD ? 'prod.env' : 'dev.env') }).parsed;
+const jsconfig = {
+  GOOGLE_API_KEY: JSON.stringify(config.GOOGLE_API_KEY),
+  GOOGLE_TAG_KEY: JSON.stringify(config.GOOGLE_TAG_KEY),
+  SECUREPAY_CLIENT: JSON.stringify(config.SECUREPAY_CLIENT),
+  SECUREPAY_MERCHANT: JSON.stringify(config.SECUREPAY_MERCHANT),
+  SECUREPAY_UI: JSON.stringify(PROD
+    ? 'https://payments.auspost.net.au/v3/ui/client/securepay-ui.min.js'
+    : 'https://payments-stest.npe.auspost.zone/v3/ui/client/securepay-ui.min.js'
+  ),
+};
+const urlconfig = new URLSearchParams(jsconfig).toString();
 
 module.exports = {
   entry: {
@@ -27,17 +38,11 @@ module.exports = {
     securepay: 'securePayUI'
   },
   plugins: [
-    new webpack.DefinePlugin({
-      GOOGLE_API_KEY: JSON.stringify(config.GOOGLE_API_KEY),
-      GOOGLE_TAG_KEY: JSON.stringify(config.GOOGLE_TAG_KEY),
-      SECUREPAY_CLIENT: JSON.stringify(config.SECUREPAY_CLIENT),
-      SECUREPAY_MERCHANT: JSON.stringify(config.SECUREPAY_MERCHANT),
-      SECUREPAY_UI: JSON.stringify(PROD
-        ? 'https://payments.auspost.net.au/v3/ui/client/securepay-ui.min.js'
-        : 'https://payments-stest.npe.auspost.zone/v3/ui/client/securepay-ui.min.js'
-      ),
+    new webpack.DefinePlugin(jsconfig),
+    new HtmlWebpackPlugin({
+      template: `pug-loader!./src/index.pug`,
+      filename: 'index.html',
     }),
-    new HtmlWebpackPlugin({ template: '!!pug-loader!./src/index.pug', filename: 'index.html' }),
     new MiniCssExtractPlugin({ filename: "[name].[contenthash].css" }),
     new PurgecssPlugin({
       paths: [
