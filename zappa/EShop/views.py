@@ -46,8 +46,13 @@ def api(allowed_methods=[]):
     return wrapper
 
 
+@api(['GET', 'POST'])
+def blank(request):
+    return {}
+
+
 @api(['POST'])
-def send_email(request):
+def contact(request):
     body = json.loads(request.body)
     if not ('subject' in body and 'text' in body):
         raise ValueError('Missing subject or text')

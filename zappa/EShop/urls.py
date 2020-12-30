@@ -1,8 +1,9 @@
-from django.urls import path
+from django.urls import include, path
 
 from . import views
 
 urlpatterns = [
-    path('send_email', views.send_email),
+    path('', views.blank),
+    path('contact', views.contact),
     path('purchase', views.purchase),
 ]

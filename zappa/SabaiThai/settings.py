@@ -24,9 +24,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('SECRET_KEY', 'dev')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['localhost', 'admin.sabaisabaithaimassage.com.au', 'api.sabaisabaithaimassage.com.au']
+ALLOWED_HOSTS = ['admin.sabaisabaithaimassage.com.au', 'api.sabaisabaithaimassage.com.au']
 
 
 # Application definition
@@ -53,7 +53,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'SabaiThai.urls'
-APPEND_SLASH = False
+APPEND_SLASH = True
 
 TEMPLATES = [
     {
