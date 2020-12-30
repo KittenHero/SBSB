@@ -1,3 +1,4 @@
+from datetime import datetime, timedelta
 import os
 import json
 
@@ -40,6 +41,9 @@ def api(allowed_methods=[]):
             except ValueError as err:
                 response = HttpResponse(err, status=400)
             response["Access-Control-Allow-Origin"] = "*"
+            response["Expires"] = (
+                datetime.utcnow() + timedelta(minutes=5)
+            ).strftime('%a, %d %b %Y %H:%M:%S GMT')
             return response
 
         return wrapped

@@ -7,6 +7,7 @@
 		"runtime": "python3.8",
 		"keep_warm": false,
 		"s3_bucket": "sabaithaiadmin",
+		"endpoint_configuration": ["REGIONAL"],
 		"vpc_config": {
 			"SecurityGroupIds": ["sg-a29715eb"],
 			"SubnetIds": ["subnet-0a92556c", "subnet-aa5422f2", "subnet-0d1dec45"]
