@@ -13,7 +13,7 @@ from .securepay import secure_pay_client
 
 ses = boto3.client('ses', region_name='ap-southeast-2')
 
-DEFAULT_DESTINATION = os.environ.get('EMAIL_TO')
+DEFAULT_DESTINATION = os.environ.get('EMAIL_TO').split(' ')
 EMAIL_FROM = os.environ.get('EMAIL_FROM')
 
 
@@ -40,10 +40,6 @@ def api(allowed_methods=[]):
                 response = HttpResponse(err, status=500)
             except ValueError as err:
                 response = HttpResponse(err, status=400)
-            response["Access-Control-Allow-Origin"] = "*"
-            response["Expires"] = (
-                datetime.utcnow() + timedelta(minutes=5)
-            ).strftime('%a, %d %b %Y %H:%M:%S GMT')
             return response
 
         return wrapped
@@ -62,7 +58,7 @@ def contact(request):
         raise ValueError('Missing subject or text')
 
     ses.send_email(
-        Destination={'ToAddresses': body.get('to', [DEFAULT_DESTINATION])},
+        Destination={'ToAddresses': body.get('to', DEFAULT_DESTINATION)},
         Message={
             'Subject': { 'Data': body['subject'] },
             'Body': {

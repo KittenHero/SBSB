@@ -50,21 +50,22 @@ const ContactForm = (props) => {
   const [{ name, email, phone, message, submitting, success, errors }, dispatch] = useReducer(formReducer, initialState)
   useEffect(() => {
     if (submitting) {
+      const body = JSON.stringify({
+        subject: `Message from ${name}`,
+        text:
+        `from: ${name}\n`
+        + `phone: ${phone}\n`
+        + `email: ${email}\n`
+        + `message: ${message}`,
+        html:
+        `<ul><li>from: ${name}</li>`
+        + `<li>phone: <a href="tel:${phone}">${phone}</a></li>`
+        + `<li>email: <a href="mailto:${email}">${email}</a></li>`
+        + `<li>message: <p>${message}</p></li></ul>`,
+      });
       fetch('https://api.sabaisabaithaimassage.com.au/contact', {
         method: 'POST',
-        body: JSON.stringify({
-          subject: `Message from ${name}`,
-          text:
-          `from: ${name}\n`
-          + `phone: ${phone}\n`
-          + `email: ${email}\n`
-          + `message: ${message}`,
-          html:
-          `<ul><li>from: ${name}</li>`
-          + `<li>phone: <a href="tel:${phone}">${phone}</a></li>`
-          + `<li>email: <a href="mailto:${email}">${email}</a></li>`
-          + `<li>message: <p>${message}</p></li></ul>`,
-        })
+        body
       }).then(() => dispatch({ type: 'success' }))
         .catch(() => dispatch({ type: 'fail' }))
     }
@@ -112,7 +113,10 @@ const ContactForm = (props) => {
             .alert.alert-success
                 strong Your message has been sent.
                 button.close(aria-hidden=true) &times;
-        button#sendMessageButton.btn.btn-primary.btn-xl.text-uppercase(onClick=() => dispatch({ type: 'submit' })) Send Message
+        button#sendMessageButton(
+          className=${`btn btn-primary btn-xl text-uppercase ${submitting ? "loading" : ""}`},
+          onClick=() => dispatch({ type: 'submit' })
+        ) Send Message
         if errors.submit
             p.help-block.text-danger Unknown error occured.  Unable to contact the server.`
 }

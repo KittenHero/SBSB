@@ -12,6 +12,14 @@
 			"SecurityGroupIds": ["sg-a29715eb"],
 			"SubnetIds": ["subnet-0a92556c", "subnet-aa5422f2", "subnet-0d1dec45"]
 		},
+		"extra_permissions": [{
+			"Effect": "Allow",
+			"Action": [
+				"ses:SendEmail",
+				"ses:SendRawEmail"
+			],
+			"Resource": "*"
+		}],
 		"certificate_arn": "arn:aws:acm:ap-southeast-2:637789488287:certificate/0da395e3-e5b6-4d44-abe0-893bd41e954d",
 		"domain": "api.sabaisabaithaimassage.com.au"
 	}

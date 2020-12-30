@@ -10326,6 +10326,23 @@ section#contact form#contactForm :-ms-input-placeholder {
   font-weight: 700;
   color: #ced4da;
 }
+section#contact form#contactForm .loading::after {
+	content: "";
+	display: inline-block;
+	box-sizing: border-box;
+	height: 1.2em;
+	width: 1.2em;
+	border: .25em solid var(--light);
+	border-top: .25em solid var(--orange);
+	border-radius: 50%;
+	animation: spin 2s linear infinite;
+	margin-left: .5em;
+}
+
+@keyframes spin {
+	0% { transform: translateY(.1em) rotate(0deg); }
+	100% { transform: translateY(.1em) rotate(360deg); }
+}
 
 .footer {
   text-align: center;
