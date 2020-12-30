@@ -10,11 +10,7 @@ from marshmallow import (
     post_load,
 )
 
-from models import (
-    Base,
-    Customer,
-    Payment,
-)
+from .models import Payment
 
 
 class Client:
