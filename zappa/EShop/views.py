@@ -13,7 +13,7 @@ from .securepay import secure_pay_client
 
 ses = boto3.client('ses', region_name='ap-southeast-2')
 
-DEFAULT_DESTINATION = os.environ.get('EMAIL_TO').split(' ')
+DEFAULT_DESTINATION = os.environ.get('EMAIL_TO', '').split(' ')
 EMAIL_FROM = os.environ.get('EMAIL_FROM')
 
 

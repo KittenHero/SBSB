@@ -72,9 +72,8 @@ class ItemSchema(Schema):
 
         if code not in self.discounts:
             discount = Discount.objects.filter(code=code, end_date__lt=make_aware(datetime.utcnow())).first()
-            if code and not discount:
-                raise ValidationError('Discount not valid', 'discount')
-            self.discounts[code] = discount
+            if discount:
+                self.discounts[code] = discount
 
     @post_load
     def make_item(self, data, **kwargs):
@@ -84,6 +83,7 @@ class ItemSchema(Schema):
             data.get('discount'),
         )
         discount = self.discounts.get(code)
+        if not discount: data.pop('discount', 0)
         model = Item(
             price=self.prices[massage, duration],
             discount=discount,
@@ -97,11 +97,10 @@ class ItemSchema(Schema):
         )
 
 
-
 class PurchaseSchema(Schema):
-    customer = fields.Nested(EshopUserSchema, required=True)
+    customer = fields.Nested(EshopUserSchema, required=False)
     token = fields.Str(dump_only=True)
-    items = fields.List(fields.Nested(ItemSchema), required=True)
+    items = fields.List(fields.Nested(ItemSchema, unknown='EXCLUDE'), required=True)
     total = fields.Decimal(2, dump_only=True)
     payment_token = fields.Str(required=False)
     payment_status = fields.Str(required=False, dump_only=True)
@@ -114,7 +113,14 @@ class PurchaseSchema(Schema):
 
     @post_load
     def connect_models(self, data, **kwargs):
-        customer = data['customer']['model']
+        customer = (
+            data['customer']['model']
+            if 'customer' in data else
+            EshopUser.objects.get_or_create(
+                email='test@sabaisabaithaimassage.com.au',
+                defaults={ 'phone':'0000000000', 'name':'api' },
+            )[0]
+        )
         purchase = Purchase(user=customer)
         models = [customer, purchase]
         total = 0

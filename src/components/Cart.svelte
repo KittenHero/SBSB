@@ -1,17 +1,18 @@
 <script>
   import { getContext } from 'svelte';
   import { Link } from 'svelte-routing';
+  import { durations, duration_reverse } from '../utils';
   export let treatments = [];
   let cart = getContext('cart');
   let codeInput = '', submitting = 0;
 
   $: infoCart = $cart.map(item => {
     const treatment = treatments.filter(t => t.title === item.massage_type)[0];
-    const price = item.price || (treatment || { prices: {} }).prices[item.duration];
-    if (!treatment || !price) return { massage_type: 'item does not exist' };
-    return { price, small: treatment.small, ...item };
+    const net_price = item.net_price || (treatment || { prices: {} }).prices[item.duration];
+    if (!treatment || !net_price) return { massage_type: 'item does not exist' };
+    return { net_price, small: treatment.small, ...item };
   });
-  $: total = infoCart.reduce((sub, item) => +item.price + sub, 0).toFixed(2);
+  $: total = infoCart.reduce((sub, item) => +item.net_price + sub, 0).toFixed(2);
 
   function remove(e) {
     const copy = $cart.slice();
@@ -26,11 +27,28 @@
     submitting = 1;
     fetch(`${API_URL}/purchase`, {
       method: 'POST',
-      body: JSON.stringify({ items: $cart.map(i => ({ ...i, code: codeInput })) }),
-    }).then(r => r.json())
-      .then(d => console.log(d))
-      .catch(() => console.log(API_URL))
-      .finally(() => { submitting = 0; });
+      body: JSON.stringify({
+        items: $cart.map(i => ({
+          ...i,
+          discount: codeInput,
+          duration: duration_reverse[i.duration]
+        }))
+      }),
+    }).then(r => {
+      if (r.ok) return r.json();
+      if (r.status == 400) return r.json().then(d => { throw d; });
+      else return r.text().then(d => { throw d; });
+    }).then(d => {
+      $cart = d.items.map((i, j) =>
+        i.net_price < $cart[j]
+        ? { ...i, duration: durations[i.duration] }
+        : $cart[j]
+      )
+    }).catch(e => console.log(e))
+      .finally(() => {
+        submitting = 0;
+        codeInput = '';
+    });
   }
 </script>
 
@@ -52,8 +70,14 @@
             img(src=`{item.small}` alt=`{item.massage_type}`)
           .col.inner
             .col.type {item.massage_type}
-            .col.time {item.duration}m
-            .col.price ${item.price}
+            .col.time {item.duration} minutes
+            .col.price
+              +if('item.discount')
+                s ${item.price}
+                br
+                | ${item.discount}:
+                br
+              | ${item.net_price}
           .col.action
             button.btn(on:click=`{remove}` data-index=`{i}`) remove
       .row.cart-item

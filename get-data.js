@@ -1,5 +1,6 @@
 const https = require('https');
 const fs = require('fs');
+const { durations, exclude_durations } = require('./src/utils.js');
 
 const treatments = [
   {
@@ -75,18 +76,6 @@ const treatments = [
     small: '$imgFacialSmall',
   },
 ];
-
-const durations = {
-  '02:00:00': 120,
-  '01:30:00': 90,
-  '01:00:00': 60,
-  '00:45:00': 45,
-  '00:30:00': 30,
-}
-const exclude_durations = {
-  'Facial Massage': [120],
-  'Body Scrub': [120],
-};
 
 const customer = {
   name: 'api',
