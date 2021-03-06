@@ -88,7 +88,7 @@ class Migration(migrations.Migration):
             name='Purchase',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('token', models.SlugField(default=EShop.models.genrate_token, unique=True)),
+                ('token', models.SlugField(default=EShop.models.generate_token, unique=True)),
                 ('timestamp', models.DateTimeField(auto_now=True)),
                 ('items', models.ManyToManyField(through='EShop.Item', to='EShop.Price')),
                 ('user', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to=settings.AUTH_USER_MODEL)),

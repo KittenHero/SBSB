@@ -18,13 +18,17 @@
   export let treatments;
   let cart = writable([]);
   let user = writable({});
+  let token = writable(undefined);
   setContext('cart', cart);
   setContext('user', user);
+  setContext('token', token);
   onMount(() => {
     $cart = JSON.parse(localStorage.cart || '[]');
     $user = JSON.parse(localStorage.user || '{}');
+    $token = localStorage.token;
     const unsub = Object.entries({ cart, user })
       .map(([name, store]) => store.subscribe(v => localStorage.setItem(name, JSON.stringify(v))));
+    unsub.push(token.subscribe(v => v ? localStorage.setItem('token', v) : localStorage.removeItem('token')));
     return () => unsub.forEach(u => u());
   });
 </script>
@@ -262,7 +266,7 @@
           width: 1%;
         }
       }
-      .input-group-append {
+      .input-group-append, .input-group-prepend {
         display: flex;
       }
     }

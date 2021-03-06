@@ -24,9 +24,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('SECRET_KEY', 'dev')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['admin.sabaisabaithaimassage.com.au', 'api.sabaisabaithaimassage.com.au']
+ALLOWED_HOSTS = ['localhost', 'admin.sabaisabaithaimassage.com.au', 'api.sabaisabaithaimassage.com.au']
 
 
 # Application definition
@@ -133,5 +133,6 @@ STATIC_URL = 'https://sabaithaiadmin.s3.amazonaws.com/'
 
 CORS_ALLOWED_ORIGINS = [
     'https://sabaisabaithaimassage.com.au',
-    'https://www.sabaisabaithaimassage.com.au',
+    'https://*.sabaisabaithaimassage.com.au',
+    'http://localhost'
 ]

@@ -1,9 +1,10 @@
 <script>
-  import { getContext } from 'svelte';
+  import { onMount, getContext } from 'svelte';
   import { Link } from 'svelte-routing';
-  import { durations, duration_reverse } from '../utils';
+  import { api, itemsTotal } from '../utils';
   export let treatments = [];
   let cart = getContext('cart');
+  let token = getContext('token');
   let codeInput = '', submitting = 0;
 
   $: infoCart = $cart.map(item => {
@@ -12,7 +13,7 @@
     if (!treatment || !net_price) return { massage_type: 'item does not exist' };
     return { net_price, small: treatment.small, ...item };
   });
-  $: total = infoCart.reduce((sub, item) => +item.net_price + sub, 0).toFixed(2);
+  $: total = itemsTotal(infoCart);
 
   function remove(e) {
     const copy = $cart.slice();
@@ -23,33 +24,23 @@
     return { class: 'btn' };
   }
   function applyCode() {
-    if (!codeInput) return;
     submitting = 1;
-    fetch(`${API_URL}/purchase`, {
-      method: 'POST',
-      body: JSON.stringify({
-        items: $cart.map(i => ({
-          ...i,
-          discount: codeInput,
-          duration: duration_reverse[i.duration]
-        }))
-      }),
-    }).then(r => {
-      if (r.ok) return r.json();
-      if (r.status == 400) return r.json().then(d => { throw d; });
-      else return r.text().then(d => { throw d; });
+    return api.purchase({
+      items: !codeInput ? $cart : $cart.map(i => ({ ...i, discount: codeInput })),
+      token: $token,
     }).then(d => {
+      $token = d.token;
       $cart = d.items.map((i, j) =>
-        i.net_price < $cart[j]
-        ? { ...i, duration: durations[i.duration] }
-        : $cart[j]
-      )
+        i.net_price < ($cart[j].net_price || Infinity)
+        ? i : $cart[j]
+      );
     }).catch(e => console.log(e))
       .finally(() => {
         submitting = 0;
         codeInput = '';
     });
   }
+  onMount(applyCode); // get idempotency token
 </script>
 
 <template>

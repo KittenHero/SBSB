@@ -1,10 +1,8 @@
 from decimal import Decimal
-import uuid
-import string
+from secrets import token_urlsafe
 
 from django.db import models, IntegrityError
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
-from django.utils.crypto import get_random_string
 
 from .managers import CustomUserManager
 
@@ -74,13 +72,13 @@ class Discount(models.Model):
 
 # TODO: DiscountValid Table shows which Discount applies to which Price
 
-def genrate_token():
-    return get_random_string(8, string.ascii_letters + string.digits)
+def generate_token():
+    return token_urlsafe(32) #bytes
 
 
 class Purchase(models.Model):
 
-    token = models.SlugField(default=genrate_token, unique=True)
+    token = models.SlugField(default=generate_token, unique=True)
     user = models.ForeignKey('EshopUser', models.PROTECT)
     timestamp = models.DateTimeField(auto_now=True)
     items = models.ManyToManyField('Price', through='Item')
@@ -96,7 +94,7 @@ class Purchase(models.Model):
             try:
                 return super().save(*args, kwargs)
             except IntegrityError:
-                self.token = genrate_token()
+                self.token = generate_token()
 
     def __str__(self):
         return f'<{self.token}>'

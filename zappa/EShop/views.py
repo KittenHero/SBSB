@@ -85,12 +85,17 @@ def purchase(request):
 
     for m in purchases['models']:
         m.save()
+    customer, purchase, *_ = purchases['models']
 
+    ip = request.META.get(
+        'HTTP_X_FORWARDED_FOR',
+        request.META.get('REMOTE_ADDR', '')
+    ).split(',')[0].strip()
     payment = secure_pay_client.make_payment(
-        amount=purchases['total'],
+            amount=f'{purchases["total"]:.2f}',
         token=purchases['payment_token'],
-        ip=event['requestContext']['identity']['sourceIp'],
-        uuid=purchases['customer']['uuid'],
+        ip=ip,
+        uuid=purchase.token,
     )
     payment.save()
     purchases['models'][1].save()

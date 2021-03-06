@@ -35,6 +35,7 @@ class Client:
         self.merchant_code = merchant_code
         self.auth_url = auth_url
         self.payment_url = payment_url
+        self._auth = None
 
     @property
     def auth(self):
@@ -61,7 +62,7 @@ class Client:
             self.payment_url,
             json={
                 'amount': amount,
-                'merchantCode': merchant_code,
+                'merchantCode': self.merchant_code,
                 'token': token,
                 'ip': ip,
                 'orderId': uuid,

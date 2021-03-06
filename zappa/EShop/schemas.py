@@ -14,6 +14,7 @@ from marshmallow import (
 from django.utils.timezone import make_aware
 
 from .models import (
+    generate_token,
     EshopUser,
     Price,
     Discount,
@@ -99,7 +100,7 @@ class ItemSchema(Schema):
 
 class PurchaseSchema(Schema):
     customer = fields.Nested(EshopUserSchema, required=False)
-    token = fields.Str(dump_only=True)
+    token = fields.Str(required=False)
     items = fields.List(fields.Nested(ItemSchema, unknown='EXCLUDE'), required=True)
     total = fields.Decimal(2, dump_only=True)
     payment_token = fields.Str(required=False)
@@ -121,7 +122,10 @@ class PurchaseSchema(Schema):
                 defaults={ 'phone':'0000000000', 'name':'api' },
             )[0]
         )
-        purchase = Purchase(user=customer)
+        purchase = Purchase(
+            user=customer,
+            token=data.pop('token', None) or generate_token(),
+        )
         models = [customer, purchase]
         total = 0
         for item in data['items']:
@@ -130,4 +134,4 @@ class PurchaseSchema(Schema):
             item.purchase = purchase
             models.append(item)
 
-        return dict(models=models, total=total, **data)
+        return dict(models=models, token=purchase.token, total=total, **data)

@@ -6,6 +6,8 @@
   let cart = getContext('cart');
   onMount(() => scroll({ top: 1 }))
   function onClick(e) {
+    alert('Online shop is under construction');
+    return;
     $cart = [...$cart, { massage_type: treatment.title, duration: e.target.dataset.duration }];
     navigate('/cart');
   }

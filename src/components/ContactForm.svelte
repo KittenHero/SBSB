@@ -1,32 +1,23 @@
 <script>
-  let name       = '',
-      email      = '',
-      phone      = '',
-      message    = '',
+  import { getContext } from 'svelte';
+  import { api } from '../utils.js';
+  let user = getContext('user');
+  let message    = '',
       submitting = 0,
       success    = 0,
       error      = 0;
+  $: name  = $user.name;
+  $: email = $user.email;
+  $: phone = $user.phone;
 
-  function onClick() {
+  function onClick(e) {
+    e.preventDefault();
     if (!name || !message || !phone || !email) {
       error = 1;
       return 0;
     }
     submitting = 1;
-    const body = JSON.stringify({
-      subject: `Message from ${name}`,
-      text:
-      `from: ${name}\n`
-      + `phone: ${phone}\n`
-      + `email: ${email}\n`
-      + `message: ${message}`,
-      html:
-      `<ul><li>from: ${name}</li>`
-      + `<li>phone: <a href="tel:${phone}">${phone}</a></li>`
-      + `<li>email: <a href="mailto:${email}">${email}</a></li>`
-      + `<li>message: <p>${message}</p></li></ul>`,
-    });
-    fetch(`${API_URL}/contact`, { method: 'POST', body })
+    api.contact({ name, phone, email, message })
       .then(() => { success = 1;})
       .catch(() => { error = 2; })
       .finally(() => { submitting = 0; })
@@ -43,15 +34,15 @@
     .row
       .col
         .form-group
-          input(bind:value=`{name}` class:empty!=`{!error && !name}` type='text' placeholder='Your Name *' title='Enter your name' required)
+          input(bind:value=`{$user.name}` class:empty!=`{!error && !name}` type='text' placeholder='Your Name *' title='Enter your name' required)
           +if('error && !name')
             p Please enter your name.
         .form-group
-          input(bind:value=`{email}` class:empty!=`{!error && !email}` type='email' placeholder='Your Email *' title='Enter your email' required)
+          input(bind:value=`{$user.email}` class:empty!=`{!error && !email}` type='email' placeholder='Your Email *' title='Enter your email' required)
           +if('error && (!email || !email.includes("@"))')
             p Please enter your email address.
         .form-group
-          input(bind:value=`{phone}` class:empty!=`{!error && !phone}` type='tel' placeholder='Your Phone *' title='Enter your phone number' required)
+          input(bind:value=`{$user.phone}` class:empty!=`{!error && !phone}` type='tel' placeholder='Your Phone *' title='Enter your phone number' required)
           +if('error && !phone')
             p Please enter your phone number.
       .col

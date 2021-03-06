@@ -40,6 +40,7 @@ module.exports = {
       template: './src/prerender.js',
       scriptLoading: 'defer',
     }),
+    new webpack.DefinePlugin(jsconfig),
     new MiniCssExtractPlugin({ filename: "[name].[contenthash].css" }),
   ],
   module: {
